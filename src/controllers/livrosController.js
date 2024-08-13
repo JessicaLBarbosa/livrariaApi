@@ -6,7 +6,6 @@ class LivroController {
   static listarLivros = async (req, res, next) => {
     try {
       const buscaLivros = livros.find();
-
       req.resultado = buscaLivros;
 
       next();
@@ -19,9 +18,7 @@ class LivroController {
     try {
       const id = req.params.id;
 
-      const livroResultado = await livros.findById(id)
-        .populate("autor", "nome")
-        .exec();
+      const livroResultado = await livros.findById(id);
 
       if (livroResultado !== null) {
         res.status(200).send(livroResultado);
@@ -36,7 +33,6 @@ class LivroController {
   static cadastrarLivro = async (req, res, next) => {
     try {
       let livro = new livros(req.body);
-
       const livroResultado = await livro.save();
 
       res.status(201).send(livroResultado.toJSON());
@@ -82,9 +78,9 @@ class LivroController {
       const busca = await processaBusca(req.query);
 
       if (busca !== null) {
-        const livrosResultado = livros.find(busca).populate("autor");
-
+        const livrosResultado = livros.find(busca);
         req.resultado = livrosResultado;
+
         next();
       } else {
         res.status(200).send([]);
